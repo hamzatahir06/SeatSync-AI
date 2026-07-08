@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# VS Code
+.vscode/
+
+# Environment variables
+.env
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Chroma Vector Database
+chroma_db/
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
