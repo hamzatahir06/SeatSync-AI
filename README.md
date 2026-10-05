@@ -2,7 +2,9 @@
 # SeatSync AI
 
 A fully local conversational agent for bus seat booking, with a RAG knowledge base.
-Built with Streamlit, Ollama (llama3.2, nomic-embed-text), and ChromaDB. No cloud APIs.
+Built with Streamlit, Ollama (llama3.2, nomic-embed-text), and ChromaDB. No cloud APIs. Check out a demo video of what we built!
+
+[github.com/user-attachments/assets/82c678a1-e2c9-4dcf-9ebd-a3ad633f6300](https://github.com/user-attachments/assets/82c678a1-e2c9-4dcf-9ebd-a3ad633f6300)
 
 ## What it does
 
