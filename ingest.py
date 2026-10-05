@@ -65,13 +65,20 @@ def main():
         response = embed(model="nomic-embed-text", input=chunk)
         vector = response["embeddings"][0]
         
-        # Insert the unique ID, vector math embedding, and original raw text into ChromaDB
-        collection.add(
+        # Insert (or overwrite) the unique ID, vector math embedding, and original raw text in ChromaDB
+        collection.upsert(
             ids=[f"chunk_{i}"],
             embeddings=[vector],
             documents=[chunk],
         )
         print(f"Stored chunk {i+1}/{len(chunks)}")
+
+    # Remove chunks left over from a previous, longer document
+    new_ids = {f"chunk_{i}" for i in range(len(chunks))}
+    stale_ids = [cid for cid in collection.get(include=[])["ids"] if cid not in new_ids]
+    if stale_ids:
+        collection.delete(ids=stale_ids)
+        print(f"Removed {len(stale_ids)} stale chunk(s).")
 
     print("Done. Knowledge base built in ./chroma_db")
 

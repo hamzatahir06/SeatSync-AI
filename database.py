@@ -31,7 +31,14 @@ def save_bookings(bookings):
 
 
 def generate_booking_id():
-    return str(random.randint(100, 999))
+    """Returns an ID no existing booking uses. Starts at 3 digits, grows if they run out."""
+    taken = {b["id"] for b in load_bookings()}
+    low, high = 100, 999
+    while True:
+        free = [str(n) for n in range(low, high + 1) if str(n) not in taken]
+        if free:
+            return random.choice(free)
+        low, high = high + 1, high * 10 + 9
 
 
 def find_booking(booking_id):
@@ -54,6 +61,7 @@ def cancel_booking(booking_id):
         if b["id"] == str(booking_id).strip():
             b["status"] = "cancelled"
             found = True
+            break
     if found:
         save_bookings(bookings)
     return found

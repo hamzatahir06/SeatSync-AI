@@ -1,5 +1,6 @@
 import time
 import re
+import html
 import streamlit as st
 
 # 🛠️ Import our modular components
@@ -88,6 +89,8 @@ if "messages" not in st.session_state:
 def bubble_html(role, text, cursor=False, guide=False):
     if guide:
         return f'<div class="row assistant"><div class="guide-card">{text}</div></div>'
+    # Only the guide card carries our own HTML; everything else is typed text
+    text = html.escape(text)
     css_class = "user" if role == "user" else "assistant"
     suffix = "▌" if cursor else ""
     return f'<div class="row {css_class}"><div class="bubble">{text}{suffix}</div></div>'
@@ -183,12 +186,13 @@ if question:
         answer = route_message(question)
 
         typed_answer = ""
-        for word in answer.split():
-            typed_answer += word + " "
+        # Keep each word's trailing whitespace so line breaks survive the typing effect
+        for word in re.findall(r'\S+\s*', answer):
+            typed_answer += word
             placeholder.markdown(bubble_html("assistant", typed_answer, cursor=True), unsafe_allow_html=True)
             time.sleep(0.02)
 
-        placeholder.markdown(bubble_html("assistant", typed_answer), unsafe_allow_html=True)
+        placeholder.markdown(bubble_html("assistant", answer), unsafe_allow_html=True)
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
     st.rerun()
