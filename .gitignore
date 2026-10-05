@@ -30,3 +30,5 @@ Thumbs.db
 
 # Logs
 *.log
+# Local booking data (contains personal details)
+bookings.json
