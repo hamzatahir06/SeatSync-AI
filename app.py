@@ -118,9 +118,11 @@ question = st.chat_input("Ask about your document, or say 'I want to book a seat
 def route_message(question):
     stage = st.session_state.booking_stage
 
-    if stage == "awaiting_booking_info":
+    # THE FIX: Close ANY open forms if the user types a new message!
+    if stage in ["awaiting_booking_info", "viewing_history"]:
         st.session_state.booking_stage = None
-        forms.reset_booking_form_state()
+        if stage == "awaiting_booking_info":
+            forms.reset_booking_form_state()
         stage = None
 
     if stage in ("awaiting_id_for_status", "awaiting_id_for_cancel"):
